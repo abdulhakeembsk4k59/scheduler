@@ -181,8 +181,3 @@ SANCTUM_STATEFUL_DOMAINS=your-domain.com
 3. Run tests before submitting: `composer run test`
 4. Submit a pull request
 
----
-
-## 📄 License
-
-MIT License — see [LICENSE](LICENSE) for details.
