@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('priority', ['high', 'medium', 'low'])->default('medium');
             $table->boolean('is_recurring')->default(false);
             $table->boolean('is_completed')->default(false);
-            $table->json('subtasks')->nullable()->default('[]');
+            $table->json('subtasks')->nullable();
             $table->enum('timing_mode', ['specific', 'anytime', 'deadline'])->default('specific');
             $table->enum('resolution', ['pending', 'completed', 'missed', 'rescheduled'])->default('pending');
             $table->integer('reschedule_count')->default(0);
