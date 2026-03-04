@@ -1,59 +1,188 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📅 Scheduler
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern scheduling and productivity web application built with **Laravel 12** and **Alpine.js**.
 
-## About Laravel
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Laravel](https://img.shields.io/badge/Laravel-12-FF2D20?logo=laravel)
+![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?logo=php)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38B2AC?logo=tailwind-css)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ✨ Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- 📅 **Event Management** — Create, edit, delete, and track events
+- 🍅 **Pomodoro Timer** — Built-in focus sessions with attendance tracking
+- 👥 **Session Attendance** — Track participation in sessions
+- 🔐 **Authentication** — Secure login and registration via Laravel Sanctum
+- 🌗 **Responsive UI** — Tailwind CSS powered layout for all screen sizes
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## 🛠 Tech Stack
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Layer | Technology |
+|-------|-----------|
+| **Framework** | Laravel 12 |
+| **Language** | PHP 8.2+ |
+| **Authentication** | Laravel Sanctum |
+| **Database** | SQLite (development) / MySQL or PostgreSQL (production) |
+| **Frontend JS** | Alpine.js 3 |
+| **CSS Framework** | Tailwind CSS 4 |
+| **Asset Bundler** | Vite + laravel-vite-plugin |
+| **Testing** | PHPUnit 11 |
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🚀 Getting Started
 
-### Premium Partners
+### Prerequisites
+- PHP 8.2+
+- Composer
+- Node.js 18+
+- SQLite (for local dev, comes pre-installed on most systems)
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Installation
 
-## Contributing
+```bash
+# 1. Clone the repository
+git clone https://github.com/abdulhakeembsk4k59/scheduler.git
+cd scheduler
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# 2. Install PHP dependencies
+composer install
 
-## Code of Conduct
+# 3. Install Node dependencies
+npm install
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# 4. Set up environment
+cp .env.example .env
+php artisan key:generate
 
-## Security Vulnerabilities
+# 5. Run migrations
+php artisan migrate
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# 6. Build frontend assets
+npm run build
+```
 
-## License
+### Run Locally
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+# Start all services at once (server + queue + logs + vite)
+composer run dev
+```
+
+Or individually:
+```bash
+php artisan serve     # Laravel dev server → http://localhost:8000
+npm run dev           # Vite dev server (hot reload)
+```
+
+---
+
+## 🧪 Running Tests
+
+```bash
+# Run all tests
+composer run test
+
+# Or directly with PHPUnit
+php artisan test
+
+# Run a specific test file
+php artisan test tests/Feature/ExampleTest.php
+```
+
+---
+
+## 📁 Project Structure
+
+```
+scheduler-laravel/
+├── app/
+│   ├── Http/
+│   │   └── Controllers/
+│   │       └── Api/           # API Controllers
+│   │           ├── EventController.php
+│   │           ├── PomodoroSessionController.php
+│   │           └── SessionAttendanceController.php
+│   └── Models/
+│       ├── Event.php
+│       ├── PomodoroSession.php
+│       ├── SessionAttendance.php
+│       └── User.php
+├── database/
+│   ├── migrations/            # Database schema
+│   ├── factories/             # Model factories
+│   └── seeders/               # Database seeders
+├── resources/
+│   └── views/                 # Blade templates
+├── routes/
+│   ├── web.php                # Web routes
+│   └── api.php                # API routes
+├── tests/
+│   ├── Feature/               # Feature tests
+│   └── Unit/                  # Unit tests
+├── vite.config.js             # Vite configuration
+└── composer.json
+```
+
+---
+
+## ☁️ Deployment
+
+### Deploy to shared hosting / VPS
+
+```bash
+# On the server
+composer install --optimize-autoloader --no-dev
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+npm run build
+```
+
+### Deploy to [Railway](https://railway.app) or [Render](https://render.com)
+
+1. Push this repo to GitHub
+2. Connect to Railway/Render
+3. Set environment variables (see below)
+4. Set start command: `php artisan serve --host=0.0.0.0 --port=$PORT`
+
+---
+
+## 🔑 Environment Variables
+
+Copy `.env.example` to `.env` and update:
+
+```env
+APP_NAME=Scheduler
+APP_ENV=production
+APP_KEY=          # Run: php artisan key:generate
+APP_URL=https://your-domain.com
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=scheduler
+DB_USERNAME=root
+DB_PASSWORD=
+
+SANCTUM_STATEFUL_DOMAINS=your-domain.com
+```
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feat/my-feature`
+3. Run tests before submitting: `composer run test`
+4. Submit a pull request
+
+---
+
+## 📄 License
+
+MIT License — see [LICENSE](LICENSE) for details.
