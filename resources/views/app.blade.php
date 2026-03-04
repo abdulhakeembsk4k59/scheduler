@@ -18,7 +18,7 @@
 
     <!-- ═══════════════════ SIDEBAR ═══════════════════ -->
     <aside class="sidebar" :class="{ 'open': sidebarOpen }">
-        <div class="sidebar-brand">
+        <div class="sidebar-brand hide-mobile">
             <div class="sidebar-brand-icon">
                 <svg style="width:1.25rem;height:1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
             </div>
@@ -70,7 +70,7 @@
                 <button class="header-nav-btn" @click="previousPeriod()">‹</button>
                 <button class="header-nav-btn" @click="nextPeriod()">›</button>
                 <button class="btn btn-ghost hide-mobile" @click="goToToday()">Today</button>
-                <h1 class="header-title" x-text="headerTitle"></h1>
+                <h1 class="header-title hide-mobile" x-text="headerTitle"></h1>
             </div>
             <div class="header-right">
                 <button class="theme-toggle" @click="toggleTheme()" :title="theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'">
