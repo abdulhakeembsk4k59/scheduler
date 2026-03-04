@@ -13,6 +13,9 @@
 <body x-data="schedulerApp()" x-init="init()" :data-theme="theme">
 
 <div class="app-layout">
+    <!-- Mobile Sidebar Backdrop -->
+    <div class="sidebar-backdrop" :class="{ 'active': sidebarOpen }" @click="sidebarOpen = false"></div>
+
     <!-- ═══════════════════ SIDEBAR ═══════════════════ -->
     <aside class="sidebar" :class="{ 'open': sidebarOpen }">
         <div class="sidebar-brand">
@@ -61,9 +64,12 @@
         <!-- Header -->
         <header class="header">
             <div class="header-left">
+                <button class="mobile-menu-toggle" @click="sidebarOpen = !sidebarOpen">
+                    <svg style="width:1.5rem;height:1.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
                 <button class="header-nav-btn" @click="previousPeriod()">‹</button>
                 <button class="header-nav-btn" @click="nextPeriod()">›</button>
-                <button class="btn btn-ghost" @click="goToToday()">Today</button>
+                <button class="btn btn-ghost hide-mobile" @click="goToToday()">Today</button>
                 <h1 class="header-title" x-text="headerTitle"></h1>
             </div>
             <div class="header-right">
@@ -79,7 +85,7 @@
                 </div>
                 <button class="btn btn-primary" @click="openNewEventModal()">
                     <svg style="width:1.1rem;height:1.1rem;stroke-width:3px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
-                    Add Event
+                    <span class="hide-mobile">Add Event</span>
                 </button>
             </div>
         </header>
@@ -114,33 +120,30 @@
 
             <!-- ▸ WEEK VIEW -->
             <template x-if="view === 'week'">
-                <div>
-                    <div style="display:grid; grid-template-columns: 60px repeat(7, 1fr); gap: 0; border: 1px solid var(--border); border-radius: 12px; overflow: hidden;">
-                        <div style="background: var(--bg-secondary); padding: 0.65rem; border-bottom: 1px solid var(--border);"></div>
+                <div class="week-view-wrapper">
+                    <div class="week-header-row">
+                        <div class="week-header-spacer"></div>
                         <template x-for="d in weekDays" :key="d.dateStr">
-                            <div style="background: var(--bg-secondary); padding: 0.65rem; text-align: center; border-bottom: 1px solid var(--border); border-left: 1px solid var(--border);">
-                                <div style="font-size: 0.72rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted);" x-text="d.dayName"></div>
-                                <div style="font-size: 1.1rem; font-weight: 700;" :style="d.isToday ? 'color: var(--accent)' : 'color: var(--text-primary)'" x-text="d.day"></div>
+                            <div class="week-header-day">
+                                <div class="week-header-name" x-text="d.dayName"></div>
+                                <div class="week-header-number" :class="{ 'today': d.isToday }" x-text="d.day"></div>
                             </div>
                         </template>
+                    </div>
+                    <div class="week-grid-container">
                         <template x-for="hour in 24" :key="hour">
-                            <template x-for="col in 8" :key="col">
-                                <div :style="col === 1
-                                    ? 'background: var(--bg-secondary); padding: 0.25rem 0.5rem; font-size: 0.7rem; color: var(--text-muted); text-align: right; height: 50px; border-bottom: 1px solid var(--border);'
-                                    : 'background: var(--bg-primary); height: 50px; border-bottom: 1px solid var(--border); border-left: 1px solid var(--border); position: relative; cursor: pointer;'"
-                                    @click="col > 1 && openNewEventModalForDate(weekDays[col-2]?.date)">
-                                    <template x-if="col === 1">
-                                        <span x-text="(hour-1).toString().padStart(2,'0') + ':00'"></span>
-                                    </template>
-                                    <template x-if="col > 1">
-                                        <template x-for="ev in getEventsForDateAndHour(weekDays[col-2]?.dateStr, hour-1)" :key="ev.id">
-                                            <div class="event-pill" :class="[ev.category]"
-                                                 style="position:absolute; inset: 2px; font-size: 0.65rem; padding: 2px 4px; border-radius: 4px;"
-                                                 @click.stop="openEditEventModal(ev)" x-text="ev.title"></div>
-                                        </template>
-                                    </template>
+                            <div class="week-hour-row">
+                                <div class="week-hour-label">
+                                    <span x-text="(hour-1).toString().padStart(2,'0') + ':00'"></span>
                                 </div>
-                            </template>
+                                <template x-for="col in 7" :key="col">
+                                    <div class="week-grid-cell" @click="openNewEventModalForDate(weekDays[col-1]?.date)">
+                                        <template x-for="ev in getEventsForDateAndHour(weekDays[col-1]?.dateStr, hour-1)" :key="ev.id">
+                                            <div class="event-pill" :class="[ev.category]" @click.stop="openEditEventModal(ev)" x-text="ev.title"></div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
                         </template>
                     </div>
                 </div>
@@ -148,24 +151,19 @@
 
             <!-- ▸ DAY VIEW -->
             <template x-if="view === 'day'">
-                <div>
-                    <div style="display: flex; flex-direction: column; gap: 1px; border: 1px solid var(--border); border-radius: 12px; overflow: hidden;">
-                        <template x-for="hour in 24" :key="hour">
-                            <div style="display: grid; grid-template-columns: 60px 1fr; min-height: 55px;"
-                                 @click="openNewEventModalForDate(currentDate)">
-                                <div style="background: var(--bg-secondary); padding: 0.25rem 0.5rem; font-size: 0.7rem; color: var(--text-muted); text-align: right; display: flex; align-items: flex-start; justify-content: flex-end; border-bottom: 1px solid var(--border);">
-                                    <span x-text="(hour-1).toString().padStart(2,'0') + ':00'"></span>
-                                </div>
-                                <div style="background: var(--bg-primary); border-bottom: 1px solid var(--border); padding: 0.25rem; position: relative; cursor: pointer;">
-                                    <template x-for="ev in getEventsForDateAndHour(formatDate(currentDate), hour-1)" :key="ev.id">
-                                        <div class="event-pill" :class="[ev.category]"
-                                             style="margin-bottom: 2px; padding: 0.3rem 0.5rem;"
-                                             @click.stop="openEditEventModal(ev)" x-text="ev.title"></div>
-                                    </template>
-                                </div>
+                <div class="day-view-container">
+                    <template x-for="hour in 24" :key="hour">
+                        <div class="day-hour-row" @click="openNewEventModalForDate(currentDate)">
+                            <div class="day-hour-label">
+                                <span x-text="(hour-1).toString().padStart(2,'0') + ':00'"></span>
                             </div>
-                        </template>
-                    </div>
+                            <div class="day-grid-cell">
+                                <template x-for="ev in getEventsForDateAndHour(formatDate(currentDate), hour-1)" :key="ev.id">
+                                    <div class="event-pill" :class="[ev.category]" @click.stop="openEditEventModal(ev)" x-text="ev.title"></div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
                 </div>
             </template>
 
